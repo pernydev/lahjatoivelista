@@ -131,7 +131,7 @@
 										>Avaa linkki</button
 									>
 								{/if}
-								{#if wish.granted && imGetiing.includes(wish._id)}
+								{#if wish.granted && imGetiing.includes(wish._id) && name !== wish.wisher.toLowerCase()}
 									<button
 										class="btn btn-error"
 										on:click={async () => {
