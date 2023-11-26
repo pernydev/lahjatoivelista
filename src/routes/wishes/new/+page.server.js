@@ -5,11 +5,24 @@ export const actions = {
 	default: async ({ request }) => {
 		const body = await request.formData();
 
+		let url = body.get('url');
+
+		try	{
+			new URL(url);
+		} catch {
+			url = `http://${url}`;
+			try	{
+				new URL(url);
+			} catch {
+				url = undefined;
+			}
+		}
+
 		const wish = {
 			title: body.get('title'),
 			description: body.get('description'),
 			granted: false,
-			url: body.get('url'),
+			url: url,
 			wisher: body.get('wisher')
 		};
 

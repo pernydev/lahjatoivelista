@@ -91,11 +91,11 @@
 					class="input input-bordered w-full"
 					id="wisher-input"
 					name="wisher"
-					disabled
+					readonly
 					value={capitalizeFirstLetter(name)}
 				/>
 				<label class="label" for="wish-link-input">
-					<span class="label-text">Toiveen linkki</span>
+					<span class="label-text">Toiveen linkki (valinnainen)</span>
 				</label>
 				<input
 					type="text"
@@ -126,10 +126,12 @@
 							<h2 class="card-title heading-2">{wish.wisher}: {wish.title}</h2>
 							<p>{wish.description}</p>
 							<div class="card-actions">
-								<button class="btn btn-ghist flex-1" on:click={() => linkopener.open(wish.url)}
-									>Avaa linkki</button
-								>
-								{#if wish.granted && !wish.wisher.toLowerCase() == name}
+								{#if wish.url}
+									<button class="btn btn-ghist flex-1" on:click={() => linkopener.open(wish.url)}
+										>Avaa linkki</button
+									>
+								{/if}
+								{#if wish.granted && imGetiing.includes(wish._id)}
 									<button
 										class="btn btn-error"
 										on:click={async () => {
@@ -140,9 +142,10 @@
 									<button
 										class="btn btn-primary flex-1"
 										on:click={async () => {
-											if (wish.wisher.toLowerCase()	 == name) {
+											if (wish.wisher.toLowerCase() == name) {
 												err('Et voi hommata tätä lahjaa!', 403);
 											} else {
+												console.log('granting');
 												await grant(wish._id);
 											}
 										}}>Hommaan!</button
